@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Convite</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            background: linear-gradient(to right, #ff7e5f, #feb47b);
+            color: #fff;
+        }
+
+        h1 {
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .buttons {
+            display: flex;
+            gap: 20px;
+        }
+
+        .button {
+            padding: 15px 30px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 18px;
+            color: #fff;
+            background-color: #ff6f61;
+            /* Rosa suave */
+            transition: background-color 0.3s ease;
+        }
+
+        .button:hover {
+            background-color: #e55d4b;
+            /* Tom mais escuro de rosa */
+        }
+
+        #no-btn {
+            background-color: #ff4d4d;
+            position: relative;
+        }
+
+        #no-btn:hover {
+            background-color: #cc0000;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .date-options {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
+            width: 90%;
+            max-width: 1000px;
+        }
+
+        .date-option {
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            color: #333;
+            padding: 20px;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            background-size: cover;
+            background-position: center;
+            height: 350px;
+        }
+
+        .date-option .image {
+            flex: 1;
+            background-size: cover;
+            background-position: center;
+            border-radius: 8px;
+            height: 200px;
+            margin-bottom: 10px;
+        }
+
+        .date-option .details {
+            margin-top: 10px;
+        }
+
+        .date-option h2 {
+            margin-bottom: 10px;
+            font-size: 20px;
+        }
+
+        .date-option p {
+            margin-bottom: 15px;
+            font-size: 14px;
+        }
+
+        .date-option .button {
+            margin-top: 10px;
+        }
+
+        .submit-button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            font-size: 16px;
+            border: none;
+            border-radius: 5px;
+            background-color: #ff6f61;
+            /* Rosa suave */
+            color: #fff;
+            cursor: pointer;
+        }
+
+        .submit-button:hover {
+            background-color: #e55d4b;
+            /* Tom mais escuro de rosa */
+        }
+
+        .selected {
+            opacity: 0.5;
+            background-color: #e55d4b;
+        }
+
+        footer {
+            margin-top: 50px;
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        @media (max-width: 600px) {
+            .button {
+                font-size: 16px;
+                padding: 10px 20px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div id="step1">
+        <h1>Você aceita sair comigo? 🥰</h1>
+        <div class="buttons">
+            <button class="button" id="yes-btn">Sim</button>
+            <button class="button" id="no-btn">Não</button>
+        </div>
+    </div>
+
+    <div id="step2" class="hidden">
+        <h1>Escolha um tipo de date:</h1>
+        <p>Conforme sua escolha, eu penso em um lugar perfeito para nós! 😄</p>
+        <div class="date-options">
+            <div class="date-option">
+                <div class="image" style="background-image: url(imagens/praia.jpg);"></div>
+                <div class="details">
+                    <h2>Passeio ao ar livre</h2>
+                    <p>Que tal aproveitar a praia e relaxar?</p>
+                    <button class="button choose-date" data-date="Passeio ao ar livre">Escolher</button>
+                </div>
+            </div>
+            <div class="date-option">
+                <div class="image" style="background-image: url('imagens/jantar.png');"></div>
+                <div class="details">
+                    <h2>Jantar romântico</h2>
+                    <p>Um jantar especial para nós dois em um restaurante ou se preferir, eu cozinho.</p>
+                    <button class="button choose-date" data-date="Jantar romântico">Escolher</button>
+                </div>
+            </div>
+            <div class="date-option">
+                <div class="image" style="background-image: url('imagens/cinema.jpg');"></div>
+                <div class="details">
+                    <h2>Programinha cultural</h2>
+                    <p>Visitar um museu, cinema ou teatro.</p>
+                    <button class="button choose-date" data-date="Programinha cultural">Escolher</button>
+                </div>
+            </div>
+        </div>
+
+        <h2>Escolha a data de sua disponibilidade:</h2>
+        <input type="date" id="date-picker" class="button">
+        <button class="submit-button">Enviar</button>
+    </div>
+
+    <footer>
+        <i>Feito com ❤️ por Bruno</i>
+    </footer>
+
+    <script>
+        const noBtn = document.getElementById("no-btn");
+        const yesBtn = document.getElementById("yes-btn");
+        const step1 = document.getElementById("step1");
+        const step2 = document.getElementById("step2");
+        const submitButton = document.querySelector('.submit-button');
+        const dateButtons = document.querySelectorAll('.choose-date');
+        const datePicker = document.getElementById("date-picker");
+        let chosenDate = '';
+        let selectedDate = '';
+
+        // Contador de interações do mouse sobre o botão "Não"
+        let mouseOverCount = 0;
+
+        // Botão "Não" se move
+        noBtn.addEventListener("mouseover", () => {
+            mouseOverCount++;
+
+            // Na terceira vez que o mouse passar, exibe a mensagem
+            if (mouseOverCount === 3) {
+                alert("Ei, não seja assim! Me dá uma chance, vai? 🥺");
+            }
+
+            noBtn.style.position = "absolute";
+            noBtn.style.top = `${Math.random() * (window.innerHeight - 50)}px`;
+            noBtn.style.left = `${Math.random() * (window.innerWidth - 100)}px`;
+        });
+
+        // Botão "Sim" avança para a próxima etapa
+        yesBtn.addEventListener("click", () => {
+            step1.classList.add("hidden");
+            step2.classList.remove("hidden");
+        });
+
+        // Escolher tipo de date
+        dateButtons.forEach(button => {
+            button.addEventListener('click', (e) => {
+                // Remover a classe 'selected' de todos os botões
+                dateButtons.forEach(btn => btn.classList.remove('selected'));
+
+                // Adicionar a classe 'selected' ao botão clicado
+                e.target.classList.add('selected');
+
+                // Armazenar a escolha
+                chosenDate = e.target.getAttribute('data-date');
+            });
+        });
+
+        // Enviar escolhas com confirmação
+        submitButton.addEventListener('click', () => {
+            if (!chosenDate || !datePicker.value) {
+                alert('Por favor, escolha um tipo de date e uma data.');
+                return;
+            }
+
+            const confirmation = confirm("CUIDADO! Ao aceitar, você corre sérios riscos de ser mais do que só um amor de fim de noite.");
+            if (confirmation) {
+                selectedDate = datePicker.value;
+                const mailtoLink = `mailto:bruninhosouzab21@gmail.com?subject=Convite aceito!&body=Tipo de date: ${chosenDate}%0AData escolhida: ${selectedDate}`;
+                window.location.href = mailtoLink;
+            }
+        });
+    </script>
+</body>
+
+</html>
