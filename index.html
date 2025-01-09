@@ -37,13 +37,11 @@
             font-size: 18px;
             color: #89004f;
             background-color: #ffa4df;
-            /* Rosa suave */
             transition: background-color 0.3s ease;
         }
 
         .button:hover {
             background-color: #9c0031;
-            /* Tom mais escuro de rosa */
         }
 
         #no-btn {
@@ -117,14 +115,12 @@
             border: none;
             border-radius: 5px;
             background-color: #ffa4df;
-            /* Rosa suave */
             color: #89004f;
             cursor: pointer;
         }
 
         .submit-button:hover {
             background-color: #9c0031;
-            /* Tom mais escuro de rosa */
         }
 
         .selected {
@@ -206,14 +202,10 @@
         let chosenDate = '';
         let selectedDate = '';
 
-        // Contador de interações do mouse sobre o botão "Não"
         let mouseOverCount = 0;
 
-        // Botão "Não" se move
         noBtn.addEventListener("mouseover", () => {
             mouseOverCount++;
-
-            // Na terceira vez que o mouse passar, exibe a mensagem
             if (mouseOverCount === 3) {
                 alert("Ei, não seja assim! Me dá uma chance, vai? 🥺");
             }
@@ -223,27 +215,19 @@
             noBtn.style.left = `${Math.random() * (window.innerWidth - 100)}px`;
         });
 
-        // Botão "Sim" avança para a próxima etapa
         yesBtn.addEventListener("click", () => {
             step1.classList.add("hidden");
             step2.classList.remove("hidden");
         });
 
-        // Escolher tipo de date
         dateButtons.forEach(button => {
             button.addEventListener('click', (e) => {
-                // Remover a classe 'selected' de todos os botões
                 dateButtons.forEach(btn => btn.classList.remove('selected'));
-
-                // Adicionar a classe 'selected' ao botão clicado
                 e.target.classList.add('selected');
-
-                // Armazenar a escolha
                 chosenDate = e.target.getAttribute('data-date');
             });
         });
 
-        // Enviar escolhas com confirmação
         submitButton.addEventListener('click', () => {
             if (!chosenDate || !datePicker.value) {
                 alert('Por favor, escolha um tipo de date e uma data.');
